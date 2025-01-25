@@ -1,0 +1,50 @@
+name: Deploy to TigerGraph
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up TigerGraph CLI
+      - name: Install TigerGraph CLI
+        run: |
+          sudo apt-get update && sudo apt-get install -y wget
+          wget https://github.com/TigerGraph/gsql_client/releases/download/3.8.0/gsql_client-3.8.0.tar.gz
+          tar -xvzf gsql_client-3.8.0.tar.gz
+          sudo mv gsql_client-3.8.0 /opt/tigergraph
+          echo "export PATH=$PATH:/opt/tigergraph/bin" >> ~/.bashrc
+          source ~/.bashrc
+
+      # Step 3: Authenticate with TigerGraph
+      - name: Authenticate with TigerGraph
+        env:
+          TG_HOST: ${{ secrets.TG_HOST }}
+          TG_USERNAME: ${{ secrets.TG_USERNAME }}
+          TG_PASSWORD: ${{ secrets.TG_PASSWORD }}
+        run: |
+          gsql -u $TG_USERNAME -p $TG_PASSWORD -ip $TG_HOST "ls"
+
+      # Step 4: Deploy Schema
+      - name: Deploy Schema
+        run: |
+          gsql -u ${{ secrets.TG_USERNAME }} -p ${{ secrets.TG_PASSWORD }} -ip ${{ secrets.TG_HOST }} -g myGraph schema.gsql
+
+      # Step 5: Deploy Queries
+      - name: Deploy Queries
+        run: |
+          gsql -u ${{ secrets.TG_USERNAME }} -p ${{ secrets.TG_PASSWORD }} -ip ${{ secrets.TG_HOST }} -g myGraph queries.gsql
+
+      # Step 6: Run Tests (Optional)
+      - name: Test Deployment
+        run: |
+          gsql -u ${{ secrets.TG_USERNAME }} -p ${{ secrets.TG_PASSWORD }} -ip ${{ secrets.TG_HOST }} "run query test_query()"
