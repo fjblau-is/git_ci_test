@@ -1,1 +1,1 @@
-CREATE VERTEX ParameterLibrary(PRIMARY_ID parameterId STRING, parameterName STRING, parameterClassId INT, parameterClassName STRING, parameterValue STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="false"
+CREATE VERTEX ParameterLibrary(PRIMARY_ID parameterId STRING, parameterName STRING, parameterClassId INT, parameterClassName STRING, parameterValue STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
