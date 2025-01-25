@@ -19,7 +19,7 @@ jobs:
       - name: Install TigerGraph CLI
         run: |
           sudo apt-get update && sudo apt-get install -y wget
-          wget https://github.com/TigerGraph/gsql_client/releases/download/3.8.0/gsql_client-3.8.0.tar.gz
+          wget https://github.com/TigerGraph/gsql_client/releases/download/4.1.2/gsql_client-4.1.2.tar.gz
           tar -xvzf gsql_client-3.8.0.tar.gz
           sudo mv gsql_client-3.8.0 /opt/tigergraph
           echo "export PATH=$PATH:/opt/tigergraph/bin" >> ~/.bashrc
