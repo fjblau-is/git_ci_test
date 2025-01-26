@@ -24,16 +24,6 @@ jobs:
           # sudo mv gsql_client-3.8.0 /opt/tigergraph
           # echo "export PATH=$PATH:/opt/tigergraph/bin" >> ~/.bashrc
           # source ~/.bashrc
-
-      #step 2A - Copy Jar
-      - name: Copy single file to remote
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: tigergraph-4.1.2-gsql_client.jar
-          remote: tigergraph-4.1.2-gsql_client.jar
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.PASSWORD }}
           
       # Step 3: Authenticate with TigerGraph
       - name: Authenticate with TigerGraph
